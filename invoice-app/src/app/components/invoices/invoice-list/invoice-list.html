@@ -1,0 +1,248 @@
+<div class="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Section -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 lg:mb-8 gap-4">
+      <div>
+        <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Invoices</h1>
+        <p class="text-gray-600 text-sm lg:text-base">Manage and track all your invoices</p>
+      </div>
+      <a 
+        routerLink="/invoices/create" 
+        class="inline-flex items-center px-4 py-2 lg:px-6 lg:py-3 bg-gray-900 hover:bg-black text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Create Invoice
+      </a>
+    </div>
+  
+    <!-- Filter section -->
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 lg:p-6 mb-6">
+      <div class="flex items-center mb-4">
+        <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+        </svg>
+        <h2 class="text-lg font-semibold text-gray-900">Filters</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Search by Client Name"
+            [(ngModel)]="clientName"
+            (keyup.enter)="fetchInvoices()"
+            class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all bg-white"
+          />
+          <svg class="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+        <select 
+          [(ngModel)]="status" 
+          (change)="fetchInvoices()" 
+          class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all bg-white font-medium text-gray-700"
+        >
+          <option value="">All Status</option>
+          <option value="unpaid">Unpaid</option>
+          <option value="paid">Paid</option>
+          <option value="overdue">Overdue</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <button 
+          (click)="resetFilters()" 
+          class="w-full px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all flex items-center justify-center"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          Reset
+        </button>
+      </div>
+    </div>
+  
+    <!-- Loading State -->
+    <div *ngIf="loading" class="bg-white rounded-2xl shadow-lg border border-gray-100 p-12">
+      <div class="flex flex-col items-center justify-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-gray-900 mb-4"></div>
+        <p class="text-gray-600 font-medium">Loading invoices...</p>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="bg-red-50 border-l-4 border-red-500 rounded-xl p-4 mb-6">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p class="text-red-800 font-medium">{{ error }}</p>
+      </div>
+    </div>
+  
+    <!-- Invoice Table -->
+    <div *ngIf="!loading" class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+      <!-- Empty State -->
+      <div *ngIf="invoices.length === 0" class="text-center py-16 px-4">
+        <div class="inline-block mb-4">
+          <svg class="h-20 w-20 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">No invoices found</h3>
+        <p class="text-gray-600 mb-6">Get started by creating your first invoice.</p>
+        <a 
+          routerLink="/invoices/create" 
+          class="inline-flex items-center px-6 py-3 bg-gray-900 hover:bg-black text-white font-semibold rounded-xl transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Create Invoice
+        </a>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="invoices.length > 0" class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Invoice #</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Client</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Total</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Issue Date</th>
+              <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Due Date</th>
+              <th class="px-6 py-4 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-100">
+            <tr *ngFor="let inv of invoices" class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-semibold text-gray-900">{{ inv.invoiceNumber }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">{{ inv.clientName }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-bold text-gray-900">₹{{ inv.totalAmount | number:'1.2-2' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span 
+                  class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold capitalize"
+                  [ngClass]="{
+                    'bg-green-100 text-green-800': inv.status === 'paid',
+                    'bg-red-100 text-red-800': inv.status === 'unpaid' || inv.status === 'overdue',
+                    'bg-gray-100 text-gray-800': inv.status === 'cancelled'
+                  }"
+                >
+                  {{ inv.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-600 font-medium">{{ inv.issueDate | date: 'mediumDate' }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-600 font-medium">
+                  <span *ngIf="inv.dueDate">{{ inv.dueDate | date: 'mediumDate' }}</span>
+                  <span *ngIf="!inv.dueDate" class="text-gray-400">—</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <div class="flex items-center justify-end space-x-2">
+                  <a
+                    [routerLink]="['/invoices', inv.id]"
+                    class="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
+                    title="View"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                  </a>
+                  <a
+                    [routerLink]="['/invoices', inv.id, 'edit']"
+                    class="inline-flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
+                    title="Edit"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                  </a>
+                  <button
+                    (click)="toggleStatus(inv)"
+                    [ngClass]="{
+                      'bg-green-100 text-green-700 hover:bg-green-200': inv.status === 'unpaid' || inv.status === 'overdue',
+                      'bg-red-100 text-red-700 hover:bg-red-200': inv.status === 'paid'
+                    }"
+                    class="inline-flex items-center px-3 py-2 rounded-lg transition-all"
+                    [title]="inv.status === 'paid' ? 'Mark as Unpaid' : 'Mark as Paid'"
+                  >
+                    <svg *ngIf="inv.status === 'paid'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    <svg *ngIf="inv.status === 'unpaid' || inv.status === 'overdue'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </button>
+                  <button
+                    (click)="deleteInvoice(inv)"
+                    class="inline-flex items-center px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-all"
+                    title="Delete"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <!-- Pagination -->
+    <div *ngIf="totalPages > 1 && !loading" class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
+      <div class="text-sm text-gray-600 font-medium">
+        Showing page <span class="font-bold text-gray-900">{{ page }}</span> of <span class="font-bold text-gray-900">{{ totalPages }}</span>
+        <span *ngIf="totalItems > 0"> ({{ totalItems }} total invoices)</span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button
+          (click)="setPage(page - 1)"
+          [disabled]="page === 1"
+          class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center shadow-sm"
+        >
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Previous
+        </button>
+        <div class="flex space-x-1">
+          <button
+            *ngFor="let p of [].constructor(totalPages); let i = index"
+            (click)="setPage(i + 1)"
+            [class.bg-gray-900]="page === i + 1"
+            [class.text-white]="page === i + 1"
+            [class.text-gray-700]="page !== i + 1"
+            [class.bg-white]="page !== i + 1"
+            [class.shadow-md]="page === i + 1"
+            class="px-3 py-2 text-sm font-semibold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all min-w-[40px] shadow-sm"
+          >
+            {{ i + 1 }}
+          </button>
+        </div>
+        <button
+          (click)="setPage(page + 1)"
+          [disabled]="page === totalPages"
+          class="px-4 py-2 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center shadow-sm"
+        >
+          Next
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="p-6 lg:p-8 bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg border border-gray-200">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h3 class="text-xl lg:text-2xl font-bold text-gray-900">Income Overview</h3>
+      <p class="text-sm text-gray-600 font-medium mt-1">Track your revenue over time</p>
+    </div>
+    <select
+      [(ngModel)]="filter"
+      (change)="onFilterChange()"
+      aria-label="Select filter"
+      class="border-2 border-gray-200 rounded-xl px-4 py-2.5 font-semibold text-gray-900 bg-white hover:border-gray-300 focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all shadow-sm"
+    >
+      <option value="day">Day</option>
+      <option value="week">Week</option>
+      <option value="month">Month</option>
+      <option value="year">Year</option>
+    </select>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-16">
+    <div class="flex flex-col items-center justify-center gap-3">
+      <div class="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-gray-900"></div>
+      <p class="text-gray-600 font-medium">Loading chart data...</p>
+    </div>
+  </div>
+  <div *ngIf="error" class="bg-red-50 border-l-4 border-red-500 rounded-xl p-4">
+    <p class="text-red-800 font-medium">{{ error }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error" class="chart-container bg-white rounded-xl p-4 border border-gray-100 shadow-inner">
+    <canvas 
+      baseChart
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      type="line">
+    </canvas>
+  </div>
+</div>

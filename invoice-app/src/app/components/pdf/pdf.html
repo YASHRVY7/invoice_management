@@ -1,0 +1,82 @@
+<button
+  type="button"
+  (click)="openForm()"
+  class="pdf-download-btn bg-gray-900 text-white px-5 py-2.5 rounded-xl hover:bg-black font-semibold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+>
+  Print Invoice
+</button>
+
+<div class="pdf-modal-backdrop" *ngIf="showForm">
+  <div class="pdf-modal">
+    <div class="pdf-modal-header">
+      <h3>Customize Invoice</h3>
+      <button type="button" class="pdf-close" (click)="closeForm()" [disabled]="downloading">&times;</button>
+    </div>
+
+    <form (ngSubmit)="submitAndDownload()" #customForm="ngForm" class="pdf-form">
+      <div class="pdf-form-group">
+        <label for="fromName">From (Company / Sender)</label>
+        <input
+          id="fromName"
+          name="fromName"
+          type="text"
+          [(ngModel)]="formData.fromName"
+          required
+          placeholder="Acme Corp"
+        />
+      </div>
+
+      <div class="pdf-form-group">
+        <label for="fromAddress">From Address</label>
+        <textarea
+          id="fromAddress"
+          name="fromAddress"
+          rows="3"
+          [(ngModel)]="formData.fromAddress"
+          required
+          placeholder="123 Business St.&#10;City, State ZIP"
+        ></textarea>
+      </div>
+
+      <div class="pdf-form-group">
+        <label for="fromEmail">From Email (optional)</label>
+        <input
+          id="fromEmail"
+          name="fromEmail"
+          type="email"
+          [(ngModel)]="formData.fromEmail"
+          placeholder="accounts@acme.com"
+        />
+      </div>
+
+      <div class="pdf-form-group">
+        <label for="extraDetails">Additional Details (optional)</label>
+        <textarea
+          id="extraDetails"
+          name="extraDetails"
+          rows="3"
+          [(ngModel)]="formData.extraDetails"
+          placeholder="Payment instructions, thank you note, etc."
+        ></textarea>
+      </div>
+
+      <div *ngIf="error" class="pdf-error">
+        {{ error }}
+      </div>
+
+      <div class="pdf-modal-actions">
+        <button type="button" class="pdf-btn-secondary" (click)="closeForm()" [disabled]="downloading">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="pdf-btn-primary"
+          [disabled]="downloading || customForm.invalid"
+        >
+          <span *ngIf="downloading">Preparing...</span>
+          <span *ngIf="!downloading">Download</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
