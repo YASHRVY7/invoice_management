@@ -35,11 +35,11 @@
 <tr>
 <td width="50%">
 <img src="https://github.com/user-attachments/assets/bea78753-2bce-421f-8f83-992a6cd95bd0" alt="Invoice Details" width="100%"/>
-<p><em>🧾 Invoice Details</em></p>
+<p><em>🧾 PDF Generation</em></p>
 </td>
 <td width="50%">
 <img src="https://github.com/user-attachments/assets/bd705726-1ffc-4f36-8f9e-68d07d90191e" alt="PDF Preview" width="100%"/>
-<p><em>📄 PDF Generation</em></p>
+<p><em>📄 Invoice Details</em></p>
 </td>
 </tr>
 </table>
