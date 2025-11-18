@@ -39,7 +39,7 @@
 </td>
 <td width="50%">
 <img src="https://github.com/user-attachments/assets/bd705726-1ffc-4f36-8f9e-68d07d90191e" alt="PDF Preview" width="100%"/>
-<p><em>📄 Invoice Details</em></p>
+<p><em>📄 Create Invoice </em></p>
 </td>
 </tr>
 </table>
