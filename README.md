@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧾 Invoice Automation Platform
+# 🧾 Invoice Management
 
 ### *Professional invoice management reimagined*
 
