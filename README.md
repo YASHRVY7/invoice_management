@@ -1,206 +1,399 @@
-# Invoice Automation Platform
+<div align="center">
 
-[![Angular](https://img.shields.io/badge/Angular-20.3-bd002e?logo=angular&logoColor=white)](#invoice-app) 
-[![NestJS](https://img.shields.io/badge/NestJS-11.0-e0234e?logo=nestjs&logoColor=white)](#invoice-backend) 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript&logoColor=white)](#tech-stack) 
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql&logoColor=white)](#invoice-backend) 
-[![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A520.0-339933?logo=node.js&logoColor=white)](#getting-started) 
-[![CI Ready](https://img.shields.io/badge/CI-ready-success)](#useful-scripts) 
-[![License](https://img.shields.io/badge/License-Private-lightgrey)](#license)
+# 🧾 Invoice Automation Platform
 
-> End-to-end invoice management with JWT auth, analytics, PDF generation, and admin tooling—built with Angular 20 and NestJS 11.
+### *Professional invoice management reimagined*
 
----
+[![Angular](https://img.shields.io/badge/Angular-20.3-bd002e?style=for-the-badge&logo=angular&logoColor=white)](https://angular.io/)
+[![NestJS](https://img.shields.io/badge/NestJS-11.0-e0234e?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
-## Highlights
-- **Modern UX**: Tailwind + Flowbite based Angular standalone components for auth, dashboard, invoicing, PDF previews, and admin views.
-- **Business-grade API**: NestJS + TypeORM + PostgreSQL with JWT auth, granular invoice filters, role-based admin routes, analytics, and PDF exports.
-- **Productivity optimizations**: Shared models, HTTP interceptors, guards, and DTO validation keep the stack type-safe front-to-back.
-- **Ready for teams**: Admin module manages users/logs, income charts visualize paid revenue, and PDF templates are customizable via UI.
+**End-to-end invoice management with JWT authentication, real-time analytics, PDF generation, and comprehensive admin tooling.**
+
+[Features](#-features) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [API Reference](#-api-reference) • [Contributing](#-contributing)
 
 ---
 
-## Repository Layout
+</div>
 
-| Path | Description | Key tech |
-| --- | --- | --- |
-| `invoice-app/` | Angular SPA for signup/login, invoice CRUD, dashboards, charts, PDF customization, and admin console. | Angular 20, ng2-charts, Chart.js, Tailwind, Flowbite |
-| `invoice-backend/` | NestJS API for auth, invoices, PDF generation, analytics, and admin endpoints. | NestJS 11, TypeORM, PostgreSQL, JWT, PDFKit |
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🎨 **Modern Frontend**
+- ⚡ Angular 20 standalone components
+- 🎯 Tailwind CSS + Flowbite UI
+- 📊 Interactive charts with Chart.js
+- 🔐 JWT-based authentication
+- 📱 Fully responsive design
+
+</td>
+<td width="50%">
+
+### 🚀 **Powerful Backend**
+- 🏗️ NestJS 11 architecture
+- 🗄️ PostgreSQL with TypeORM
+- 📄 PDF generation with PDFKit
+- 🛡️ Role-based access control
+- 📈 Real-time analytics endpoints
+
+</td>
+</tr>
+</table>
 
 ---
 
-## Architecture Overview
+## 🎯 Highlights
+
+```mermaid
+graph LR
+    A[👤 User Login] --> B[📊 Dashboard]
+    B --> C[📝 Create Invoice]
+    C --> D[💾 Save to DB]
+    D --> E[📄 Generate PDF]
+    B --> F[📈 View Analytics]
+    B --> G[⚙️ Admin Panel]
+    style A fill:#bd002e,color:#fff
+    style B fill:#3178c6,color:#fff
+    style E fill:#e0234e,color:#fff
+```
+
+- ✅ **Intuitive UX** - Clean, modern interface for seamless invoice management
+- ✅ **Enterprise-Ready** - Robust authentication, validation, and error handling
+- ✅ **Analytics Dashboard** - Visualize revenue trends and key metrics
+- ✅ **PDF Customization** - Brand your invoices with custom headers and notes
+- ✅ **Admin Console** - Comprehensive user and activity management
+- ✅ **Type-Safe** - Shared TypeScript models across frontend and backend
+
+---
+
+## 📁 Project Structure
 
 ```
-Angular UI ──> Auth & Invoice Services ──┐
-                                        │ REST (JWT)
-Browser Storage (JWT) <─ Auth Guard <───┤
-                                        ▼
-                              NestJS HTTP API
-                                  │
-                    TypeORM ↔ PostgreSQL (invoices, users, items)
-                                  │
-                         PDFKit for downloadable invoices
+📦 invoice-automation-platform
+├── 🎨 invoice-app/              # Angular 20 Frontend
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── auth/            # Authentication components
+│   │   │   ├── dashboard/       # Dashboard & analytics
+│   │   │   ├── invoices/        # Invoice CRUD operations
+│   │   │   ├── admin/           # Admin console
+│   │   │   └── shared/          # Shared services & guards
+│   │   └── assets/
+│   └── tailwind.config.js
+│
+└── 🚀 invoice-backend/          # NestJS 11 API
+    ├── src/
+    │   ├── auth/                # JWT authentication
+    │   ├── invoices/            # Invoice management
+    │   ├── chart/               # Analytics endpoints
+    │   ├── pdf/                 # PDF generation
+    │   ├── admin/               # Admin operations
+    │   └── database/            # TypeORM configuration
+    └── test/
 ```
 
-- `Auth` service/guards store JWTs securely and gate both `/invoices/*` and `/admin`.
-- `authInterceptor` automatically injects the `Authorization` header and redirects on `401`s.
-- Backend DTOs validate every payload; services centralize calculations (e.g., overdue logic, totals, stats).
-- Chart endpoints (`/chart/income`) aggregate paid revenue by day/week/month/year for the dashboard widget.
-- PDF service (`/pdf/invoice/:id`) streams a branded invoice PDF that can be customized via UI form inputs.
+---
+
+## 🏗️ Architecture
+
+<div align="center">
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Angular Frontend                        │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
+│  │   Auth   │  │ Invoice  │  │Dashboard │  │  Admin   │   │
+│  │ Service  │  │ Service  │  │ Service  │  │ Service  │   │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘   │
+│       │             │              │             │          │
+│       └─────────────┴──────────────┴─────────────┘          │
+│                          │                                   │
+│                  JWT Auth Interceptor                        │
+└──────────────────────────┼──────────────────────────────────┘
+                           │
+                    REST API (HTTPS)
+                           │
+┌──────────────────────────▼──────────────────────────────────┐
+│                     NestJS Backend                          │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
+│  │   Auth   │  │ Invoice  │  │  Chart   │  │   PDF    │   │
+│  │ Module   │  │ Module   │  │ Module   │  │ Module   │   │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘   │
+│       │             │              │             │          │
+│       └─────────────┴──────────────┴─────────────┘          │
+│                          │                                   │
+│                    TypeORM Layer                             │
+└──────────────────────────┼──────────────────────────────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │   PostgreSQL    │
+                  │    Database     │
+                  └─────────────────┘
+```
+
+</div>
 
 ---
 
-## Tech Stack
+## 🚀 Quick Start
 
-- **Frontend**: Angular 20, Standalone Components, ng2-charts/Chart.js, TailwindCSS 3, Flowbite UI kit, RxJS 7.
-- **Backend**: NestJS 11, TypeORM 0.3, PostgreSQL, Passport JWT, PDFKit, class-validator/transformer, bcrypt.
-- **Tooling**: ESLint + Prettier, Karma/Jasmine (FE tests), Jest (BE unit/e2e), `ts-node` utilities, `check-db-connection` script.
+### Prerequisites
 
----
+| Tool | Version | Purpose |
+|------|---------|---------|
+| 🟢 Node.js | ≥ 20.0 | Runtime environment |
+| 📦 npm | ≥ 10.0 | Package manager |
+| 🐘 PostgreSQL | ≥ 14.0 | Database |
+| 🅰️ Angular CLI | Latest | Development tooling |
 
-## Frontend (`invoice-app`)
+### Installation
 
-- **Auth**: Login/signup forms with optimistic UX, JWT storage, and role-aware guards.
-- **Dashboard**: Combined stats + latest invoices + income line chart (`Chart` component) backed by `/invoices/statistics` and `/chart/income`.
-- **Invoices**: CRUD screens (`InvoiceList`, `InvoiceCreate`, `InvoiceDetail`, `InvoiceEdit`) with filters (status, client name), pagination, bulk state toggling, and delete safety prompts.
-- **PDF customization**: `Pdf` component collects branding fields (`fromName`, address, email, notes) before requesting a PDF blob.
-- **Admin console**: Protected by `roleGuard`, surfaces user totals, active/admin counts, activity logs, and deletion controls (`AdminDashboard` + `Admin` service).
-- **Shared UX**: Tailwind utility classes, Flowbite components, and centralized constants (`API`) keep endpoints configurable.
+**1️⃣ Clone the repository**
 
----
+```bash
+git clone <repository-url>
+cd invoice-automation-platform
+```
 
-## Backend (`invoice-backend`)
-
-- **Auth module**: Signup/login endpoints issue JWTs with embedded username/role, consumed by `JwtAuthGuard`.
-- **Invoices module**: DTOs sanitize payloads, service auto-calculates status (e.g., auto-overdue), totals, and pagination metadata.
-- **Chart module**: Uses `DATE_TRUNC` queries to aggregate paid invoices into chart-friendly `labels` + `values`.
-- **PDF module**: `PdfService` builds polished invoices via PDFKit, applying customization payloads and inline INR currency formatting.
-- **Admin module**: Role-protected routes (`@Roles(Role.Admin)`) expose user CRUD and audit logs.
-- **Config**: `getDatabaseConfig` injects `DB_*` env vars; `synchronize` + SQL logging only enabled in development. `check-db-connection.ts` validates connectivity ahead of migrations.
-
----
-
-## API Surface (selected)
-
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| `POST` | `/auth/signup` | Create user (returns JWT). |
-| `POST` | `/auth/login` | Authenticate and issue JWT containing `username`, `role`, `userId`. |
-| `GET` | `/invoices` | Paginated invoices with filters `status`, `clientName`. |
-| `POST` | `/invoices` | Create invoice with nested items (auto totals). |
-| `PUT` / `PATCH` | `/invoices/:id` / `/invoices/:id/status` | Update invoice or just its status. |
-| `GET` | `/invoices/statistics` | Summary counts & revenue for dashboard cards. |
-| `GET` | `/chart/income?period=day|week|month|year` | Aggregated income for charts. |
-| `POST` | `/pdf/invoice/:id` | Streams customized PDF (accepts optional branding payload). |
-| `GET` | `/admin/users` | Admin-only: list users + total counts. |
-| `GET` | `/admin/logs` | Admin-only: recent audit entries. |
-| `DELETE` | `/admin/users/:id` | Admin-only user removal. |
-
-All invoice, chart, pdf, and admin routes require a valid `Authorization: Bearer <token>` header enforced by `JwtAuthGuard`.
-
----
-
-## Getting Started
-
-### 1. Prerequisites
-
-- Node.js ≥ 20
-- npm ≥ 10
-- PostgreSQL ≥ 14 with a database/user ready
-- Angular CLI (`npm install -g @angular/cli`) for convenience
-
-### 2. Environment variables (backend)
+**2️⃣ Configure environment variables**
 
 Create `invoice-backend/.env`:
 
-```
+```env
+# Server Configuration
 NODE_ENV=development
 PORT=3000
-JWT_SECRET=replace-me
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key-change-this
 JWT_EXPIRES_IN=1d
+
+# Database Configuration
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
-DB_PASSWORD=postgres
+DB_PASSWORD=your-password
 DB_DATABASE=invoice_db
 ```
 
-> Run `npm run check:db` inside `invoice-backend` to verify connectivity.
-
-### 3. Install dependencies
+**3️⃣ Install dependencies**
 
 ```bash
-# from repo root
-cd invoice-backend && npm install
-cd ../invoice-app && npm install
+# Backend dependencies
+cd invoice-backend
+npm install
+
+# Frontend dependencies
+cd ../invoice-app
+npm install
 ```
 
-### 4. Run development servers
+**4️⃣ Verify database connection**
 
 ```bash
-# backend API (http://localhost:3000)
+cd invoice-backend
+npm run check:db
+```
+
+**5️⃣ Start development servers**
+
+```bash
+# Terminal 1 - Backend API
 cd invoice-backend
 npm run start:dev
 
-# frontend SPA (http://localhost:4200)
-cd ../invoice-app
+# Terminal 2 - Frontend App
+cd invoice-app
 npm start
 ```
 
-The Angular app points to `http://localhost:3000` via `API.BASE` and will hot-reload on changes.
+🎉 **Done!** Visit:
+- 🎨 Frontend: [http://localhost:4200](http://localhost:4200)
+- 🚀 Backend API: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## Quality Checks & Testing
+## 📡 API Reference
+
+### 🔐 Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/auth/signup` | Register new user |
+| `POST` | `/auth/login` | Authenticate & receive JWT |
+
+### 📝 Invoices
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/invoices` | List invoices (paginated, filterable) |
+| `POST` | `/invoices` | Create new invoice |
+| `GET` | `/invoices/:id` | Get invoice details |
+| `PUT` | `/invoices/:id` | Update invoice |
+| `PATCH` | `/invoices/:id/status` | Update invoice status |
+| `DELETE` | `/invoices/:id` | Delete invoice |
+| `GET` | `/invoices/statistics` | Dashboard statistics |
+
+### 📊 Analytics
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/chart/income?period=day\|week\|month\|year` | Income aggregation for charts |
+
+### 📄 PDF Generation
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/pdf/invoice/:id` | Generate & download PDF |
+
+### ⚙️ Admin (Protected)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/admin/users` | List all users |
+| `GET` | `/admin/logs` | View activity logs |
+| `DELETE` | `/admin/users/:id` | Delete user |
+
+> 🔒 All endpoints (except auth) require `Authorization: Bearer <token>` header
+
+---
+
+## 🧪 Testing & Quality
 
 ```bash
-# Frontend unit tests (Karma + Jasmine)
-cd invoice-app && npm test
+# Frontend Tests
+cd invoice-app
+npm test                    # Run unit tests
+npm run test:coverage       # With coverage report
 
-# Backend unit tests (Jest)
-cd invoice-backend && npm test
+# Backend Tests
+cd invoice-backend
+npm test                    # Unit tests
+npm run test:e2e           # End-to-end tests
+npm run test:cov           # Coverage report
 
-# Backend e2e tests
-cd invoice-backend && npm run test:e2e
-
-# Linting / formatting
-cd invoice-backend && npm run lint
-cd invoice-app && npx ng lint   # add schematic if desired
+# Linting
+npm run lint               # Check code quality
 ```
 
 ---
 
-## Useful Scripts
+## 📦 Production Build
 
-- `invoice-backend npm run start:prod` – run compiled API from `dist/`.
-- `invoice-backend npm run build` – emit transpiled server files.
-- `invoice-backend npm run test:cov` – coverage reports.
-- `invoice-app npm run build` – production Angular build → `invoice-app/dist`.
-- `invoice-app npm run test` – watchable unit suite.
+### Backend
 
-Consider wiring these into CI (GitHub Actions, CircleCI, etc.) using the provided commands.
+```bash
+cd invoice-backend
+npm run build
+npm run start:prod
+```
 
----
+⚠️ **Important:** Set `NODE_ENV=production` and disable `synchronize` in TypeORM config
 
-## Deployment Notes
+### Frontend
 
-- **Backend**: Disable `synchronize` in production (set `NODE_ENV=production`) and manage migrations manually. Provide `JWT_SECRET` via secret store. Containerizing with multi-stage Node 20 images is recommended.
-- **Frontend**: Serve the Angular `dist/invoice-app/browser` contents via any static host (S3, Netlify, Vercel, Nginx). Update `API.BASE` (environment-specific config) before building.
-- **Security**: HTTPS termination + secure storage for JWT (currently `localStorage`) should be reviewed for production use; consider refresh tokens and stricter CSP headers.
+```bash
+cd invoice-app
+npm run build
+```
 
----
-
-## Roadmap Ideas
-
-- Background jobs to email invoices or reminders for overdue accounts.
-- Multi-tenant/company switcher support and branded themes.
-- Export/import of invoices (CSV/XLSX) and scheduled PDF delivery.
-- Automated CI (tests, lint, build) plus IaC for provisioning PostgreSQL.
+Output location: `invoice-app/dist/invoice-app/browser/`
 
 ---
 
-## License
+## 🛠️ Tech Stack Deep Dive
 
-This repository is currently marked as **private / unlicensed**. All rights reserved—please do not distribute without explicit permission.
+<table>
+<tr>
+<td width="50%" valign="top">
 
+**Frontend Technologies**
+- 🅰️ Angular 20 - Standalone components
+- 🎨 TailwindCSS 3 - Utility-first styling
+- 🌊 Flowbite - UI component library
+- 📊 Chart.js - Data visualization
+- 🔄 RxJS 7 - Reactive programming
+- 🎯 TypeScript 5.9 - Type safety
+
+</td>
+<td width="50%" valign="top">
+
+**Backend Technologies**
+- 🚀 NestJS 11 - Progressive Node.js framework
+- 🗄️ TypeORM 0.3 - ORM with PostgreSQL
+- 🔐 Passport JWT - Authentication
+- 📄 PDFKit - PDF generation
+- ✅ class-validator - DTO validation
+- 🔒 bcrypt - Password hashing
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🚦 Development Workflow
+
+```mermaid
+graph TD
+    A[💻 Code Changes] --> B{Run Tests}
+    B -->|✅ Pass| C[🔍 Lint Code]
+    B -->|❌ Fail| A
+    C -->|✅ Clean| D[📦 Build]
+    C -->|❌ Issues| A
+    D -->|✅ Success| E[🚀 Deploy]
+    D -->|❌ Fail| A
+    
+    style A fill:#3178c6,color:#fff
+    style E fill:#28a745,color:#fff
+```
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] 📧 Email notifications for overdue invoices
+- [ ] 🏢 Multi-tenant support
+- [ ] 📊 Excel export functionality
+- [ ] 🎨 Custom theme builder
+- [ ] 🔄 Automated invoice reminders
+- [ ] 📱 Mobile application
+- [ ] 🌐 Multi-language support
+- [ ] 📈 Advanced reporting module
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. 🍴 Fork the repository
+2. 🌿 Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. 💾 Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. 📤 Push to the branch (`git push origin feature/AmazingFeature`)
+5. 🔀 Open a Pull Request
+
+---
+
+## 📄 License
+
+**Private / Unlicensed**
+
+This repository is currently marked as private. All rights reserved. Please do not distribute without explicit permission.
+
+---
+
+<div align="center">
+
+### 🌟 Star this repo if you find it useful!
+
+Made with ❤️ by the Invoice Automation Team
+
+[⬆ Back to Top](#-invoice-automation-platform)
+
+</div>
