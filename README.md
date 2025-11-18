@@ -337,21 +337,7 @@ Output location: `invoice-app/dist/invoice-app/browser/`
 
 ---
 
-## 🚦 Development Workflow
 
-```mermaid
-graph TD
-    A[💻 Code Changes] --> B{Run Tests}
-    B -->|✅ Pass| C[🔍 Lint Code]
-    B -->|❌ Fail| A
-    C -->|✅ Clean| D[📦 Build]
-    C -->|❌ Issues| A
-    D -->|✅ Success| E[🚀 Deploy]
-    D -->|❌ Fail| A
-    
-    style A fill:#3178c6,color:#fff
-    style E fill:#28a745,color:#fff
-```
 
 ---
 
