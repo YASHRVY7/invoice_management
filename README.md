@@ -16,16 +16,37 @@
 ---
 
 </div>
-## ✨ UserInterface
-<img width="1906" height="910" alt="image" src="https://github.com/user-attachments/assets/bddf8896-7eb8-4e5c-b953-a454444f22fc" />
-<img width="1905" height="912" alt="image" src="https://github.com/user-attachments/assets/1462c74b-30fc-4af9-af06-da14d4160452" />
-<img width="1919" height="912" alt="image" src="https://github.com/user-attachments/assets/bea78753-2bce-421f-8f83-992a6cd95bd0" />
-<img width="1905" height="910" alt="image" src="https://github.com/user-attachments/assets/bd705726-1ffc-4f36-8f9e-68d07d90191e" />
 
+## ✨ User Interface
 
+<div align="center">
 
+<table>
+<tr>
+<td width="50%">
+<img src="https://github.com/user-attachments/assets/bddf8896-7eb8-4e5c-b953-a454444f22fc" alt="Dashboard View" width="100%"/>
+<p><em>📊 Analytics Dashboard</em></p>
+</td>
+<td width="50%">
+<img src="https://github.com/user-attachments/assets/1462c74b-30fc-4af9-af06-da14d4160452" alt="Invoice List" width="100%"/>
+<p><em>📝 Invoice Management</em></p>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<img src="https://github.com/user-attachments/assets/bea78753-2bce-421f-8f83-992a6cd95bd0" alt="Invoice Details" width="100%"/>
+<p><em>🧾 Invoice Details</em></p>
+</td>
+<td width="50%">
+<img src="https://github.com/user-attachments/assets/bd705726-1ffc-4f36-8f9e-68d07d90191e" alt="PDF Preview" width="100%"/>
+<p><em>📄 PDF Generation</em></p>
+</td>
+</tr>
+</table>
 
+</div>
 
+---
 
 ## ✨ Features
 
@@ -346,7 +367,6 @@ Output location: `invoice-app/dist/invoice-app/browser/`
 </table>
 
 ---
-
 
 
 ---
